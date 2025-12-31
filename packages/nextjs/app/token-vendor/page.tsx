@@ -38,7 +38,7 @@ const TokenVendor: NextPage = () => {
   //   args: [vendorContractData?.address],
   // });
 
-  const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
+  // const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
 
   const { data: tokensPerEth } = useScaffoldReadContract({
     contractName: "Vendor",
