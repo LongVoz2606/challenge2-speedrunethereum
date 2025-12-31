@@ -38,12 +38,12 @@ const TokenVendor: NextPage = () => {
   //   args: [vendorContractData?.address],
   // });
 
-  // const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
+  const { data: vendorEthBalance } = useWatchBalance({ address: vendorContractData?.address });
 
-  // const { data: tokensPerEth } = useScaffoldReadContract({
-  //   contractName: "Vendor",
-  //   functionName: "tokensPerEth",
-  // });
+  const { data: tokensPerEth } = useScaffoldReadContract({
+    contractName: "Vendor",
+    functionName: "tokensPerEth",
+  });
 
   return (
     <>
@@ -72,32 +72,37 @@ const TokenVendor: NextPage = () => {
         </div>
 
         {/* Buy Tokens */}
-        {/* <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary rounded-xl p-6 mt-8 w-full max-w-lg">
-          <div className="text-xl">Buy tokens</div>
-          <div>{tokensPerEth?.toString() || 0} tokens per ETH</div>
+        {
+          <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary rounded-xl p-6 mt-8 w-full max-w-lg">
+            <div className="text-xl">Buy tokens</div>
+            <div>{tokensPerEth?.toString() || 0} tokens per ETH</div>
 
-          <div className="w-full flex flex-col space-y-2">
-            <IntegerInput
-              placeholder="amount of tokens to buy"
-              value={tokensToBuy.toString()}
-              onChange={value => setTokensToBuy(value)}
-              disableMultiplyBy1e18
-            />
+            <div className="w-full flex flex-col space-y-2">
+              <IntegerInput
+                placeholder="amount of tokens to buy"
+                value={tokensToBuy.toString()}
+                onChange={value => setTokensToBuy(value)}
+                disableMultiplyBy1e18
+              />
+            </div>
+
+            <button
+              className="btn btn-secondary mt-2"
+              onClick={async () => {
+                try {
+                  await writeVendorAsync({
+                    functionName: "buyTokens",
+                    value: getTokenPrice(tokensToBuy, tokensPerEth),
+                  });
+                } catch (err) {
+                  console.error("Error calling buyTokens function", err);
+                }
+              }}
+            >
+              Buy Tokens
+            </button>
           </div>
-
-          <button
-            className="btn btn-secondary mt-2"
-            onClick={async () => {
-              try {
-                await writeVendorAsync({ functionName: "buyTokens", value: getTokenPrice(tokensToBuy, tokensPerEth) });
-              } catch (err) {
-                console.error("Error calling buyTokens function", err);
-              }
-            }}
-          >
-            Buy Tokens
-          </button>
-        </div> */}
+        }
 
         {!!yourTokenBalance && (
           <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary rounded-xl p-6 mt-8 w-full max-w-lg">
@@ -131,7 +136,7 @@ const TokenVendor: NextPage = () => {
         )}
 
         {/* Sell Tokens */}
-        {/* {!!yourTokenBalance && (
+        {!!yourTokenBalance && (
           <div className="flex flex-col items-center space-y-4 bg-base-100 shadow-lg shadow-secondary border-8 border-secondary rounded-xl p-6 mt-8 w-full max-w-lg">
             <div className="text-xl">Sell tokens</div>
             <div>{tokensPerEth?.toString() || 0} tokens per ETH</div>
@@ -179,7 +184,7 @@ const TokenVendor: NextPage = () => {
               </button>
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </>
   );
